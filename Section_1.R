@@ -3,26 +3,26 @@
 
 post_code_data <- read.csv("../NI_Crime_Data/NIPostcodes.csv", header = FALSE)
 
-#a) Show the total number of rows, the structure of the data frame, and first 10
-#   rows of the data frame containing all of the NIPostcode data.
+# a) Show the total number of rows, the structure of the data frame, and first 10
+#    rows of the data frame containing all of the NIPostcode data.
 nrow(post_code_data)
 str(post_code_data)
 head(post_code_data, 10)
 
-#b) Add a suitable title for each attribute of the data.
+# b) Add a suitable title for each attribute of the data.
 column_headers <- c("Organisation_Name", "Sub_building_Name", "Building_Name", "Number", "Primary_Thorfare", 
                    "Alt_Thorfare", "Secondary_Thorfare", "Locality", "Townland", "Town", "County", 
                    "Postcode", "x_coordinates", "y_coordinates", "Primary_Key")
 colnames(post_code_data) <- column_headers
 
-#c) Remove or replace missing entries with a suitable identifier. Decide whether it is
-#   best to remove missing data or to recode it. Discuss missing data and justify
-#   your decision in detail.
+# c) Replace and recode all missing entries with a suitable identifier. Decide
+#    whether it is best to remove none, some or all of the missing data. Discuss the
+#    missing data using suitable graphical output to explain your answer and justify
+#    your decision in detail.
 
-for(col_name in column_headers) {
-  blank_count <- sum(get(col_name, post_code_data) == "")
-  print(sprintf("%s  Blank: %s", col_name, blank_count))
-}
+blank_columns = integer()
+blank_columns['TotalRows'] <- nrow(post_code_data)
+for (c in column_headers) { blank_columns[c] <- sum(get(c, post_code_data) == "") }
 
 post_code_data$Organisation_Name[post_code_data$Organisation_Name == ""] <- NA
 post_code_data$Sub_building_Name[post_code_data$Sub_building_Name == ""] <- NA
@@ -34,18 +34,17 @@ post_code_data$Secondary_Thorfare[post_code_data$Secondary_Thorfare == ""] <- NA
 post_code_data$Locality[post_code_data$Locality == ""] <- NA
 post_code_data$Town[post_code_data$Town == ""] <- NA
 post_code_data$Postcode[post_code_data$Postcode == ""] <- NA
-post_code_data$x_coordinates[post_code_data$x_coordinates == ""] <- NA
-post_code_data$y_coordinates[post_code_data$y_coordinates == ""] <- NA
-post_code_data$Primary_Key[post_code_data$Primary_Key == ""] <- NA
 
-#d) Show the total number of missing values for each column in the postcode data
-#   frame.
 
-for(col_name in column_headers) {
-  na_count <- sum(is.na(get(col_name, post_code_data)))
-  blank_count <- sum(get(col_name, post_code_data) == "")
-  print(sprintf("%s  NA: %s", col_name, na_count))
-}
+# d) Show the total number of missing values for each column in the postcode data
+#    frame both before and after your decision to deal with the missing data
+#    variables.
+na_columns = integer()
+na_columns['TotalRows'] <- nrow(post_code_data)
+for (c in column_headers) { na_columns[c] <- sum(is.na(get(c, post_code_data))) }
+
+print(cbind(blank_columns, na_columns))
+
 
 #e) Move the primary key identifier to the start of the dataset.
 new_column_headers <- c(column_headers[15], column_headers[1:14])
