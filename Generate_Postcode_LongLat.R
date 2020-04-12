@@ -34,5 +34,8 @@ postcode_LL <- spTransform(postcode_SP, CRS("+init=epsg:4326"))
 coords <- data.frame(postcode_LL$clean_ni_postcode_data.Primary_Key, postcode_LL@coords)
 colnames(coords) <- c('postcode_PK', 'Long', 'Lat')
 
+# Print the coords dataset
+head(coords)
+
 # And save it to a known location 
 write.csv(coords, 'PreComputed/PostCode_XY_to_LL.csv')
